@@ -100,10 +100,15 @@ model.position1 = pyo.Constraint(expr =sum([x[p] for p in fpl.index[fpl.Position
 model.position2 = pyo.Constraint(expr =sum([x[p] for p in fpl.index[fpl.Position == 'Def']])  == 5)
 model.position3 = pyo.Constraint(expr =sum([x[p] for p in fpl.index[fpl.Position == 'Mid']])  == 5)
 model.position4 = pyo.Constraint(expr =sum([x[p] for p in fpl.index[fpl.Position == 'Att']])  == 3)
-opt = SolverFactory('gurobi')
+
+#Note: Since week 2, you normally only want to make 1 or 2 transfers, which means you need to add another constraints to keep about 14-15 players in your previous week
+#To do that, you should pay attention to the ID of your player in the data table (or in the results section from optimization)
+#For example if I want to Keep David De Gea (ID = 238) in my squad still, my code would be:
+# model.test = pyo.Constraint(expr = sum([x[p]for p in fpl.index[fpl.ID == 238]]) == 1)
 
 
 #Solving the problem
+opt = SolverFactory('gurobi')
 opt.solve(model)
 model.pprint()
 
