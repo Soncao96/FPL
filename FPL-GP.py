@@ -54,7 +54,9 @@ s7a = model.s7minus
 s7b = model.s7plus
 
 model.obj = pyo.Objective(expr = s1a+s2a+s3a+s4a+s5a+s6a+s7a,sense=1)
-
+#Note: In this, I consider all of the importance level of those goals will be equal (weight = 1). If you want to stress more, for example, the Shots stat (weight = 1)
+# while other stats stressed a bit less (e can set a lighter weight = 0.8) then the expression will be: expr = s1a+ 0.8*s2a + 0.8*s3a +0.8*s4a + 0.8*s5a + 0.8*s6a + 0.8*s7a
+# All in all, simply set the weight( imprtance level) of every stats and remember to multiply their weight in the objective function
 
 #Setting up constraint
 
@@ -73,6 +75,7 @@ model.C4 = pyo.Constraint(expr = sum([x[p]*fpl.CleanSheets[p] for p in fpl.index
 model.C5 = pyo.Constraint(expr = sum([x[p]*fpl.TotalSaves[p] for p in fpl.index[fpl.Position == 'Gk']]) +s5a -s5b ==45*2)
 model.C6 = pyo.Constraint(expr = sum([x[p]*fpl.AccCross[p] for p in fpl.index[fpl.Position == 'Def']]) +s6a -s6b ==16*5)
 model.C7 = pyo.Constraint(expr = sum([x[p]*fpl.Mins[p] for p in fpl.index]) +s7a -s7b ==1300*15)
+
 
 #FPL rules Constraints
 model.cost = pyo.Constraint(expr = sum([x[p]*fpl.Cost[p] for p in fpl.index]) == 100)
