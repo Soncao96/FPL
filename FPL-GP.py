@@ -145,29 +145,3 @@ print(pyo.value(s6a))
 print(pyo.value(s6b))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
