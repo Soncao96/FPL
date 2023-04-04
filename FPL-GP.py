@@ -37,7 +37,7 @@ model.s6plus = pyo.Var(bounds=(0,None))
 model.s7minus = pyo.Var(bounds=(0,None))
 model.s7plus = pyo.Var(bounds=(0,None))
 
-#Set up Goals (In this model, we will have 7 goals/metrics)
+#Set up Goals (In this model, we will have 7 goals/metrics), positive and negative deviations
 s1a = model.s1minus
 s1b = model.s1plus
 s2a = model.s2minus
@@ -66,19 +66,20 @@ model.C1 = pyo.Constraint(expr = sum([x[p]*fpl.Shots[p] for p in fpl.index]) +s1
 
 model.C2 = pyo.Constraint(expr = sum([x[p]*fpl.KeyPass[p] for p in fpl.index]) +s2a -s2b ==16*15)
 
-model.limit = pyo.Constraint(expr = sum([x[p] for p in fpl.index]) ==15)
-
 model.C3 = pyo.Constraint(expr = sum([x[p]*fpl.CleanSheets[p] for p in fpl.index[fpl.Position == 'Gk']]) +s3a -s3b ==5*2)
 
 model.C4 = pyo.Constraint(expr = sum([x[p]*fpl.CleanSheets[p] for p in fpl.index[fpl.Position == 'Def']]) +s4a -s4b ==4*5)
 
 model.C5 = pyo.Constraint(expr = sum([x[p]*fpl.TotalSaves[p] for p in fpl.index[fpl.Position == 'Gk']]) +s5a -s5b ==45*2)
+
 model.C6 = pyo.Constraint(expr = sum([x[p]*fpl.AccCross[p] for p in fpl.index[fpl.Position == 'Def']]) +s6a -s6b ==16*5)
+
 model.C7 = pyo.Constraint(expr = sum([x[p]*fpl.Mins[p] for p in fpl.index]) +s7a -s7b ==1300*15)
 
 
 #FPL rules Constraints
 model.cost = pyo.Constraint(expr = sum([x[p]*fpl.Cost[p] for p in fpl.index]) == 100)
+model.limit = pyo.Constraint(expr = sum([x[p] for p in fpl.index]) ==15)
 
 model.team1 = pyo.Constraint(expr =sum([x[p]for p in fpl.index[fpl.Team == 'ARS']]) <= 3)
 model.team2 = pyo.Constraint(expr =sum([x[p]for p in fpl.index[fpl.Team == 'AVL']]) <= 3)
